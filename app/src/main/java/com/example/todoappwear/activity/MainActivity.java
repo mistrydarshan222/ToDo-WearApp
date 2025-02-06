@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.todoappwear.R;
 import com.example.todoappwear.databinding.ActivityMainBinding;
@@ -16,9 +17,14 @@ import com.example.todoappwear.utils.ConfirmUtils;
 import com.example.todoappwear.utils.Constants;
 import com.example.todoappwear.utils.TaskUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding mainBinding;
+
+    private List<Task> mytasks = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +41,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void init(){
-            initTask();
+        setLayout();
+        initTask();
     }
+
+    private void setLayout()
+    {
+        mainBinding.wrcViewTask.setHasFixedSize(true);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mainBinding.wrcViewTask.setLayoutManager(mLayoutManager);
+    }
+
 
     private void initTask() {
         mainBinding.addtask.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -69,5 +84,17 @@ public class MainActivity extends AppCompatActivity {
             ConfirmUtils.showSavedMessage(getString( R.string.task_saved ), this);
         }
     }
+
+    protected void onResume(){
+        super.onResume();
+        updateTaskAdapter();
+    }
+
+    private void updateTaskAdapter() {
+        myTasks.clear();
+        myTasks.addAll(TaskUtils.getAllTasks(this));
+        bindAdapter();
+    }
+
 
 }

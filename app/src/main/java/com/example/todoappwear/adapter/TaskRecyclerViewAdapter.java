@@ -57,4 +57,8 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
             recycleRowBinding.txtTask.setText(taskdetails);
         }
     }
+
+    public int getItemcount(){
+        return mTasks.size();
+    }
 }
